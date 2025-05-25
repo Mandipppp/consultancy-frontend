@@ -1,350 +1,324 @@
-import React, { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Play, Users, BookOpen, Video, MessageCircle, Award, Sparkles, Globe, Zap, Target, TrendingUp } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import {
+  Users, Award, Video, PenTool, Brain, Shield, FileText, UserCheck,
+  GraduationCap, ChevronRight, ChevronDown, Sparkles, Star, ArrowRight, Play, Rocket
+} from 'lucide-react'
 
-const LuxuryLanding = () => {
-  const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+const testimonials = [
+  {
+    name: "Dr. Sarah Chen",
+    role: "Consultant",
+    content: "This platform revolutionized my consultancy teaching. The live features and analytics help me give the best to my clients worldwide.",
+    avatar: "👩‍💼"
+  },
+  {
+    name: "Michael Rodriguez",
+    role: "Language Specialist",
+    content: "The real-time tools make language classes easy—even for complete beginners. My students love the seamless experience!",
+    avatar: "👨‍🏫"
+  },
+  {
+    name: "Emma Thompson",
+    role: "IELTS Coach",
+    content: "Organized resources and student analytics let me focus on teaching. My students' pass rates have gone up!",
+    avatar: "👩‍🎓"
+  }
+];
+
+const features = [
+  {
+    icon: Video,
+    title: "Live Interactive Sessions",
+    desc: "HD video, screen sharing, and real-time chat for professional online classes.",
+    color: "from-[#E040FB] to-[#FF6F61]"
+  },
+  {
+    icon: PenTool,
+    title: "Collaborative Whiteboard",
+    desc: "Teach with whiteboards—draw, annotate, and explain live.",
+    color: "from-[#00F5D4] to-[#E040FB]"
+  },
+  {
+    icon: Brain,
+    title: "Smart Course Builder",
+    desc: "Easily create, update, and organize all your lessons and materials.",
+    color: "from-[#FF6F61] to-[#00F5D4]"
+  },
+  {
+    icon: Shield,
+    title: "Enterprise Security",
+    desc: "All data is encrypted and protected by strict compliance standards.",
+    color: "from-[#E040FB] to-[#00F5D4]"
+  },
+  {
+    icon: FileText,
+    title: "Resource Library",
+    desc: "Upload, store, and share unlimited learning materials and recordings.",
+    color: "from-[#00F5D4] to-[#FF6F61]"
+  },
+  {
+    icon: UserCheck,
+    title: "Student Analytics",
+    desc: "Track progress, attendance, and engagement with beautiful dashboards.",
+    color: "from-[#FF6F61] to-[#E040FB]"
+  }
+];
+
+const languages = [
+  { name: "German Language", students: "2,500+", flag: "🇩🇪", level: "A1 to C2", color: "bg-gradient-to-r from-[#E040FB] to-[#FF6F61]" },
+  { name: "Spanish Language", students: "3,200+", flag: "🇪🇸", level: "Beginner to Advanced", color: "bg-gradient-to-r from-[#00F5D4] to-[#E040FB]" },
+  {
+    name: "IELTS Preparation", students: "1,800+",
+    icon: Award, level: "Band 6.0 to 9.0", color: "bg-gradient-to-r from-[#FF6F61] to-[#00F5D4]"
+  },
+  { name: "Business English", students: "2,100+", flag: "💼", level: "Professional Level", color: "bg-gradient-to-r from-[#E040FB] to-[#00F5D4]" },
+  { name: "French Language", students: "1,900+", flag: "🇫🇷", level: "A1 to C1", color: "bg-gradient-to-r from-[#00F5D4] to-[#FF6F61]" },
+  { name: "Italian Language", students: "1,400+", flag: "🇮🇹", level: "Beginner to Intermediate", color: "bg-gradient-to-r from-[#FF6F61] to-[#E040FB]" }
+];
+
+const stats = [
+  { number: "10,000+", label: "Active Learners", icon: Users },
+  { number: "95%", label: "Completion Rate", icon: Award },
+  { number: "4.9/5", label: "Platform Rating", icon: Star },
+  { number: "24/7", label: "Support", icon: Sparkles }
+];
+
+const Landing = () => {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const heroRef = useRef(null);
+  const isHeroInView = useInView(heroRef);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  const heroVariants = {
-    hidden: { opacity: 0, y: 100 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 1.2, 
-        ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.15
-      }
-    }
-  }
-
-  const childVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-    }
-  }
-
-  const features = [
-    { icon: Video, title: "Live Interactive Sessions", desc: "HD video with screen-share and real-time collaboration" },
-    { icon: MessageCircle, title: "Smart Collaboration", desc: "Instant chat, whiteboards, and peer-to-peer notes" },
-    { icon: BookOpen, title: "Premium Content Library", desc: "On-demand recordings and curated resources" },
-    { icon: Award, title: "Expert-Led Courses", desc: "Industry professionals sharing real-world insights" }
-  ]
-
-  const stats = [
-    { number: "50K+", label: "Active Learners" },
-    { number: "1.2K+", label: "Expert Tutors" },
-    { number: "98%", label: "Success Rate" },
-    { number: "500+", label: "Premium Courses" }
-  ]
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a0a1a] to-[#0a1a1a] text-white overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="absolute w-96 h-96 bg-gradient-to-r from-[#E040FB]/20 to-[#FF6F61]/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x * 0.02,
-            y: mousePosition.y * 0.02,
-          }}
-          style={{ left: '10%', top: '20%' }}
-        />
-        <motion.div 
-          className="absolute w-80 h-80 bg-gradient-to-r from-[#00F5D4]/20 to-[#E040FB]/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x * -0.015,
-            y: mousePosition.y * -0.015,
-          }}
-          style={{ right: '10%', bottom: '20%' }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-[#1E1E1E] via-[#2A1A2A] to-[#1A2A2A] text-white overflow-hidden">
       {/* Navigation */}
-      <motion.nav 
-        className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/10"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
+      <motion.nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur border-b border-[#E040FB]/20"
+        initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.7 }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <motion.div 
-            className="text-2xl font-bold bg-gradient-to-r from-[#E040FB] to-[#FF6F61] bg-clip-text text-transparent"
-            whileHover={{ scale: 1.05 }}
-          >
-            ConsultLearn
-          </motion.div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-[#E040FB] to-[#FF6F61] bg-clip-text text-transparent flex items-center gap-2">
+            <GraduationCap className="w-8 h-8 text-[#E040FB]" /> ConsultancyLearn
+          </div>
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="hover:text-[#E040FB] transition-colors">Features</a>
-            <a href="#about" className="hover:text-[#E040FB] transition-colors">About</a>
-            <a href="#pricing" className="hover:text-[#E040FB] transition-colors">Pricing</a>
-            <motion.button 
-              className="px-6 py-2 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-full font-medium hover:shadow-lg hover:shadow-[#E040FB]/25 transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Sign In
-            </motion.button>
+            <a href="#platform" className="hover:text-[#E040FB] font-medium">Platform</a>
+            <a href="#languages" className="hover:text-[#E040FB] font-medium">Languages</a>
+            <a href="#testimonials" className="hover:text-[#E040FB] font-medium">Reviews</a>
+            <motion.button className="px-6 py-2 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-lg font-semibold hover:shadow-lg"
+              whileHover={{ scale: 1.05 }}>Get Started</motion.button>
           </div>
         </div>
       </motion.nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6">
-        <motion.div 
-          className="max-w-6xl mx-auto text-center"
-          variants={heroVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-[#E040FB]/30 rounded-full mb-8"
-            variants={childVariants}
-          >
-            <Sparkles className="w-4 h-4 text-[#E040FB]" />
-            <span className="text-sm font-medium">Premium Learning Experience</span>
+      {/* Hero */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center px-6 pt-28">
+        <motion.div className="max-w-4xl mx-auto text-center"
+          initial="hidden" animate={isHeroInView ? "visible" : "hidden"}
+          variants={{
+            hidden: { opacity: 0, y: 80 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}>
+          <motion.div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#E040FB]/20 to-[#FF6F61]/20 border border-[#E040FB]/30 rounded-full mb-8 backdrop-blur-xl"
+            whileHover={{ scale: 1.05 }}>
+            <Award className="w-5 h-5 text-[#FF6F61]" />
+            <span className="font-semibold">Premium Learning Experience</span>
+            <Sparkles className="w-5 h-5 text-[#00F5D4]" />
           </motion.div>
-
-          <motion.h1 
-            className="text-6xl md:text-8xl font-black mb-6 leading-none"
-            variants={childVariants}
-          >
-            <span className="bg-gradient-to-r from-[#E040FB] via-[#FF6F61] to-[#00F5D4] bg-clip-text text-transparent">
-              Elevate
-            </span>
-            <br />
-            Your Learning
-          </motion.h1>
-
-          <motion.p 
-            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed"
-            variants={childVariants}
-          >
-            Transform your expertise into premium educational experiences. Join thousands of professionals creating, teaching, and learning through our cutting-edge platform.
-          </motion.p>
-
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-            variants={childVariants}
-          >
-            <motion.button 
-              className="group relative px-8 py-4 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-full font-bold text-lg overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Start Learning Today
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-[#FF6F61] to-[#E040FB]"
-                initial={{ x: '100%' }}
-                whileHover={{ x: '0%' }}
-                transition={{ duration: 0.3 }}
-              />
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-[#E040FB] via-[#FF6F61] to-[#00F5D4] bg-clip-text text-transparent">
+            Next-Gen Consultancy Platform
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Modern consultancy made simple. Create, manage, and deliver your services in style—trusted by 10,000+ learners globally.
+          </p>
+          <motion.div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-10"
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
+            <motion.button
+              className="group relative px-10 py-5 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-lg font-semibold text-xl overflow-hidden shadow-2xl"
+              whileHover={{ scale: 1.05, y: -3 }}>
+              <span className="flex items-center gap-3">Start Free Trial <ArrowRight className="w-6 h-6" /></span>
             </motion.button>
-
-            <motion.button 
-              className="group flex items-center gap-3 px-8 py-4 border-2 border-[#00F5D4] rounded-full font-semibold text-[#00F5D4] hover:bg-[#00F5D4] hover:text-black transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Play className="w-5 h-5" />
-              Watch Demo
+            <motion.button className="group flex items-center gap-3 px-8 py-5 border-2 border-[#00F5D4] rounded-lg font-semibold text-[#00F5D4] hover:bg-[#00F5D4] hover:text-black transition-all text-lg"
+              whileHover={{ scale: 1.05, y: -2 }}>
+              <Play className="w-6 h-6" /> Watch Demo
             </motion.button>
           </motion.div>
-
           {/* Stats */}
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
-            variants={childVariants}
-          >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index}
-                className="text-center"
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-[#E040FB] to-[#00F5D4] bg-clip-text text-transparent mb-2">
-                  {stat.number}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mt-8">
+            {stats.map((stat, idx) => (
+              <div key={idx} className="text-center">
+                <div className="flex justify-center mb-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#E040FB] to-[#00F5D4] rounded-lg flex items-center justify-center">
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
                 </div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#E040FB] to-[#00F5D4] bg-clip-text text-transparent">{stat.number}</div>
                 <div className="text-gray-400 font-medium">{stat.label}</div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
+        </motion.div>
+        {/* Scroll indicator */}
+        <motion.div className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+          <ChevronDown className="w-8 h-8 text-[#E040FB]" />
         </motion.div>
       </section>
 
-      {/* Role Selection Section */}
-      <section className="relative py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-6xl font-black mb-6">
-              Choose Your <span className="bg-gradient-to-r from-[#FF6F61] to-[#E040FB] bg-clip-text text-transparent">Journey</span>
+      {/* Language Programs */}
+      <section id="languages" className="relative py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              Popular <span className="bg-gradient-to-r from-[#FF6F61] to-[#E040FB] bg-clip-text text-transparent">Language Programs</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Whether you're learning, teaching, or building an educational empire, we've got you covered.
+              Master international languages or prepare for tests with certified professionals.
             </p>
-          </motion.div>
-
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Students",
-                subtitle: "Learn & Grow",
-                description: "Access premium courses, live sessions, and collaborative tools designed for accelerated learning.",
-                icon: BookOpen,
-                gradient: "from-[#E040FB] to-[#FF6F61]",
-                href: "/student"
-              },
-              {
-                title: "Tutors",
-                subtitle: "Teach & Inspire",
-                description: "Share your expertise with powerful teaching tools, live streaming, and student engagement features.",
-                icon: Users,
-                gradient: "from-[#00F5D4] to-[#E040FB]",
-                href: "/tutor"
-              },
-              {
-                title: "Consultancy Owners",
-                subtitle: "Scale & Profit",
-                description: "Build and monetize your educational platform with advanced analytics and business tools.",
-                icon: TrendingUp,
-                gradient: "from-[#FF6F61] to-[#00F5D4]",
-                href: "/owner"
-              }
-            ].map((role, index) => (
-              <motion.div
-                key={index}
-                className="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:border-[#E040FB]/50 transition-all duration-500"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -10 }}
-              >
-                <div className={`w-16 h-16 bg-gradient-to-r ${role.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <role.icon className="w-8 h-8 text-white" />
+            {languages.map((language, idx) => (
+              <motion.div key={idx}
+                className="group p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-[#E040FB]/50 cursor-pointer overflow-hidden transition-all"
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                whileHover={{ scale: 1.02, y: -5 }}>
+                <div className="flex items-center gap-4 mb-6">
+                  {language.icon
+                    ? <language.icon className="w-8 h-8 text-[#FF6F61]" />
+                    : <span className="text-4xl">{language.flag}</span>
+                  }
+                  <div>
+                    <h3 className="text-2xl font-bold group-hover:text-[#E040FB] transition-colors">{language.name}</h3>
+                    <p className="text-gray-400">{language.level}</p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{role.title}</h3>
-                <p className="text-[#E040FB] font-semibold mb-4">{role.subtitle}</p>
-                <p className="text-gray-300 mb-8 leading-relaxed">{role.description}</p>
-                <motion.a
-                  href={role.href}
-                  className={`inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${role.gradient} rounded-full font-semibold hover:shadow-lg transition-all`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Get Started
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
+                <div className="flex items-center gap-2 mb-6">
+                  <Users className="w-5 h-5 text-[#00F5D4]" />
+                  <span className="text-[#00F5D4] font-semibold">{language.students} enrolled</span>
+                </div>
+                <motion.div className={`px-6 py-3 ${language.color} rounded-lg font-semibold flex items-center justify-center gap-2`}
+                  whileHover={{ scale: 1.05 }}>
+                  Explore Program <ChevronRight className="w-4 h-4" />
+                </motion.div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="relative py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-6xl font-black mb-6">
-              Premium <span className="bg-gradient-to-r from-[#00F5D4] to-[#E040FB] bg-clip-text text-transparent">Features</span>
+      {/* Platform Features */}
+      <section id="platform" className="relative py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              Modern <span className="bg-gradient-to-r from-[#00F5D4] to-[#E040FB] bg-clip-text text-transparent">Platform Features</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Experience the future of online education with cutting-edge tools and seamless interactions.
+              Built for consultants and students who demand more—every feature designed to make online learning effortless and effective.
             </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                className="flex items-start gap-6"
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-2xl flex items-center justify-center flex-shrink-0">
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, idx) => (
+              <motion.div key={idx}
+                className="group p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-[#E040FB]/50 overflow-hidden transition-all"
+                initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                whileHover={{ scale: 1.02, y: -5 }}>
+                <div className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mb-6`}>
                   <feature.icon className="w-8 h-8 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                  <p className="text-gray-300 text-lg leading-relaxed">{feature.desc}</p>
-                </div>
+                <h3 className="text-2xl font-bold mb-4 group-hover:text-[#E040FB]">{feature.title}</h3>
+                <p className="text-gray-300 text-lg">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Testimonials */}
+      <section id="testimonials" className="relative py-32 px-6 bg-gradient-to-br from-[#1A2A2A] to-[#2A1A2A]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-black mb-6">
+              Real Students, <span className="bg-gradient-to-r from-[#E040FB] to-[#00F5D4] bg-clip-text text-transparent">Real Results</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">See what students and consultants are saying!</p>
+          </div>
+          <div className="relative">
+            <motion.div
+              className="bg-white/5 border border-[#E040FB]/30 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto"
+              key={currentTestimonial}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="text-6xl mb-6">{testimonials[currentTestimonial].avatar}</div>
+              <div className="flex justify-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-6 h-6 text-[#FF6F61] fill-current" />
+                ))}
+              </div>
+              <p className="text-xl md:text-2xl text-gray-200 mb-6 leading-relaxed">
+                "{testimonials[currentTestimonial].content}"
+              </p>
+              <div className="text-[#E040FB] font-bold text-lg">
+                {testimonials[currentTestimonial].name}
+              </div>
+              <div className="text-gray-400">
+                {testimonials[currentTestimonial].role}
+              </div>
+            </motion.div>
+            {/* Indicators */}
+            <div className="flex justify-center mt-8 gap-3">
+              {testimonials.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`w-3 h-3 rounded-full ${idx === currentTestimonial ? 'bg-[#E040FB] scale-125' : 'bg-white/30 hover:bg-white/50'}`}
+                  onClick={() => setCurrentTestimonial(idx)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
       <section className="relative py-32 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative p-12 bg-gradient-to-r from-[#E040FB]/20 to-[#FF6F61]/20 backdrop-blur-xl border border-[#E040FB]/30 rounded-3xl"
+            className="relative p-12 bg-gradient-to-r from-[#E040FB]/20 via-[#FF6F61]/20 to-[#00F5D4]/20 border border-[#E040FB]/30 rounded-3xl"
           >
+            <div className="text-6xl mb-6">🚀</div>
             <h2 className="text-4xl md:text-6xl font-black mb-6">
-              Ready to <span className="bg-gradient-to-r from-[#E040FB] to-[#00F5D4] bg-clip-text text-transparent">Transform</span> Your Future?
+              Ready to <span className="bg-gradient-to-r from-[#E040FB] to-[#00F5D4] bg-clip-text text-transparent">Level Up</span> Your Learning?
             </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of professionals who are already building their success story with our platform.
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Join thousands of learners winning with our platform. <span className="text-[#FF6F61] font-bold">Your future self will thank you!</span>
             </p>
-            <motion.button 
-              className="px-12 py-4 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-full font-bold text-xl hover:shadow-2xl hover:shadow-[#E040FB]/25 transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Start Your Journey Today
-            </motion.button>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <motion.button
+                className="px-12 py-5 bg-gradient-to-r from-[#E040FB] to-[#FF6F61] rounded-full font-black text-xl hover:shadow-2xl flex items-center gap-3"
+                whileHover={{ scale: 1.05, y: -3 }}>
+                Start FREE Trial <Rocket className="w-6 h-6" />
+              </motion.button>
+              <div className="text-gray-400 text-sm">
+                💳 No credit card required • 🚫 Cancel anytime
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 px-6 border-t border-white/10">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-[#E040FB] to-[#FF6F61] bg-clip-text text-transparent mb-4 md:mb-0">
-            ConsultLearn
-          </div>
-          <div className="text-gray-400">
-            © 2024 ConsultLearn. Elevating education worldwide.
-          </div>
-        </div>
-      </footer>
+     
     </div>
   )
 }
 
-export default LuxuryLanding
+export default Landing
