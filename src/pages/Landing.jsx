@@ -224,7 +224,7 @@ const LandingPage = () => {
                 className="inline-block rounded-full bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 flex items-center justify-center text-white mx-0.5"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              >a</motion.span>gzy
+              >a</motion.span>ngzy
             </span>
           </motion.h1>
         </div>
@@ -383,7 +383,7 @@ const LandingPage = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Why Choose Lagzy?
+            Why Choose Langzy?
           </motion.h3>
           <motion.p 
             className="text-center text-gray-600 mb-16 text-lg max-w-3xl mx-auto"
@@ -491,7 +491,7 @@ const LandingPage = () => {
                   <p className="text-white/80 text-sm">🇺🇸 → 🇰🇷 Korean Advanced Level</p>
                 </div>
               </div>
-              <p className="text-lg italic mb-4 leading-relaxed">"I've tried countless apps and platforms, but Lagzy's personalized approach and live interaction with native speakers is unmatched. Now I'm working in Seoul!"</p>
+              <p className="text-lg italic mb-4 leading-relaxed">"I've tried countless apps and platforms, but Lnagzy's personalized approach and live interaction with native speakers is unmatched. Now I'm working in Seoul!"</p>
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -520,7 +520,7 @@ const LandingPage = () => {
             Your Language Journey Starts Now
           </motion.h3>
           <p className="text-xl mb-10 max-w-3xl mx-auto text-gray-600 leading-relaxed">
-            Join thousands of successful language learners who chose Lagzy. Whether you're preparing for exams, 
+            Join thousands of successful language learners who chose Lnagzy. Whether you're preparing for exams, 
             advancing your career, or exploring new cultures - we're here to guide you every step of the way.
           </p>
           <motion.button 
@@ -555,7 +555,7 @@ const LandingPage = () => {
                 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
                 whileHover={{ scale: 1.05 }}
               >
-                Lagzy
+                Langzy
               </motion.h4>
               <p className="text-gray-300 leading-relaxed">Empowering global communication through innovative language learning experiences and cultural exchange.</p>
             </div>
@@ -591,7 +591,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400">© {new Date().getFullYear()} Lagzy. All rights reserved.</p>
+            <p className="text-gray-400">© {new Date().getFullYear()} Lnagzy. All rights reserved.</p>
             <div className="flex gap-6 mt-4 md:mt-0">
               {['facebook', 'twitter', 'instagram', 'linkedin'].map((social, idx) => (
                 <motion.a 
