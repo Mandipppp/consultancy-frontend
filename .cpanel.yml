@@ -1,3 +1,4 @@
+---
 deployment:
   tasks:
     - /opt/cpanel/ea-nodejs18/bin/npm ci
