@@ -11,6 +11,7 @@ import AdminDashboard from './features/admin/AdminDashboard';
 import OwnerDashboard from './features/owner/pages/OwnerDashboard';
 import TutorDashboard from './features/tutor/pages/TutorDashboard';
 import UserDashboard from './features/user/pages/UserDashboard';
+import VideoCalling from './test/VideoCalling';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
         <Route path="/owner/dashboard" element={<OwnerDashboard />} />
         <Route path="/tutor/dashboard" element={<TutorDashboard />} />
         <Route path="/student/dashboard" element={<UserDashboard />} />
+
+        {/* video calling */}
+                <Route path="/call" element={<VideoCalling />} />
       </Routes>
     </Router>
   );
