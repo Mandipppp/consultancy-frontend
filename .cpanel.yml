@@ -3,4 +3,4 @@ deployment:
   tasks:
     - /opt/cpanel/ea-nodejs18/bin/npm ci
     - /opt/cpanel/ea-nodejs18/bin/npm run build
-    - /bin/cp -r build/* /home/langzyco/public_html/
+    - /bin/cp -r dist/* /home/langzyco/public_html/
