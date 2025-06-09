@@ -1,0 +1,39 @@
+@keyframes floatLeft {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-20px);
+    }
+  }
+  
+  @keyframes floatRight {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(20px);
+    }
+  }
+  
+  @keyframes floatMiddle {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+  }
+  
+  .animate-cloud-left {
+    animation: floatLeft 12s ease-in-out infinite;
+  }
+  
+  .animate-cloud-right {
+    animation: floatRight 14s ease-in-out infinite;
+  }
+  
+  .animate-cloud-middle {
+    animation: floatMiddle 16s ease-in-out infinite;
+  }
+  

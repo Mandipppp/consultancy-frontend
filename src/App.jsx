@@ -8,7 +8,6 @@ import Signup from './features/auth/Signup';
 
 // Dashboards
 import AdminDashboard from './features/admin/AdminDashboard';
-import OwnerDashboard from './features/owner/pages/OwnerDashboard';
 import TutorDashboard from './features/tutor/pages/TutorDashboard';
 import UserDashboard from './features/user/pages/UserDashboard';
 import VideoCalling from './test/VideoCalling';
@@ -23,7 +22,7 @@ function App() {
 
         {/* Dashboards */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+        {/* <Route path="/owner/dashboard" element={<OwnerDashboard />} /> */}
         <Route path="/tutor/dashboard" element={<TutorDashboard />} />
         <Route path="/student/dashboard" element={<UserDashboard />} />
 
