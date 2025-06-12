@@ -1,33 +1,31 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing';
+import VideoCalling from './test/VideoCalling';
 
-// Auth
-import Login from './features/auth/Login';
+// Common Pages
+import NotFound from './pages/NotFound'; 
+
+// USER
+import Landing from './pages/Landing';
+import UserLogin from './features/auth/UserLogin';
 import Signup from './features/auth/Signup';
 
-// Dashboards
-import AdminDashboard from './features/admin/AdminDashboard';
-import TutorDashboard from './features/tutor/pages/TutorDashboard';
-import UserDashboard from './features/user/pages/UserDashboard';
-import VideoCalling from './test/VideoCalling';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Common/Test Routes */}
+        <Route path="/call" element={<VideoCalling />} />
+
+        {/* USER ROUTES */}
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Dashboards */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        {/* <Route path="/owner/dashboard" element={<OwnerDashboard />} /> */}
-        <Route path="/tutor/dashboard" element={<TutorDashboard />} />
-        <Route path="/student/dashboard" element={<UserDashboard />} />
 
-        {/* video calling */}
-                <Route path="/call" element={<VideoCalling />} />
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
