@@ -7,8 +7,9 @@ import NotFound from './pages/NotFound';
 
 // USER
 import Landing from './pages/Landing';
-import UserLogin from './features/auth/UserLogin';
+import UserLogin from './features/auth/Login';
 import Signup from './features/auth/Signup';
+import AboutUs from './pages/AboutUs';
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/about-us" element={<AboutUs />} />
+
 
 
         {/* 404 */}
