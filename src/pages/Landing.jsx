@@ -10,6 +10,7 @@ import cloudTop from "../assets/images/home/cloudtop.png";
 import Card from "../../../consultancy-admin/admin-panel/src/components/Card";
 import PricingCard from "../components/PricingCard";
 import api from "../api/axios";
+import Navbar from "../components/Navbar";
 
 export default function HomePage() {
   // ─── Languages State ─────────────────────────────────────────────
@@ -117,40 +118,7 @@ export default function HomePage() {
   return (
     <div className="bg-sky-400 min-h-screen flex flex-col items-center text-white font-sans">
       {/* Navbar */}
-      <nav className="bg-sky-300 mt-4 px-6 py-2 rounded-full shadow-md flex justify-center gap-20 items-center w-11/12 max-w-5xl">
-        <div className="flex gap-10 text-ls text-white">
-          <a href="#" className="hover:underline">
-            Home
-          </a>
-          <Link
-            to="/about-us" className="hover:underline">
-            About Us
-          </Link>
-          <a href="#languages" className="hover:underline">
-            Languages
-          </a>
-          <a href="#pricing" className="hover:underline">
-            Pricing
-          </a>
-          <a href="#" className="hover:underline">
-            Reviews
-          </a>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            to="/login"
-            className="bg-black text-white px-4 py-1 rounded-full text-sm"
-          >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-black text-white px-4 py-1 rounded-full text-sm"
-          >
-            Sign Up
-          </Link>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center mt-20 relative z-10">

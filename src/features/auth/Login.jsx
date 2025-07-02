@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import toastManager from '../../utils/toastManager';
+import { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(data.user));
 
       // Show success toast
-      toast.success('Login successful! Redirecting...');
+      toastManager.success('Login successful! Redirecting...');
 
       // Delay redirect to show toast
       setTimeout(() => {
@@ -84,7 +85,7 @@ const Login = () => {
     } catch (err) {
       console.error('❌ Login error:', err.response?.data || err.message);
       setError(err.response?.data?.message || 'Login failed. Please try again.');
-      toast.error(err.response?.data?.message || 'Login failed!');
+      toastManager.error(err, err.response?.data?.message || 'Login failed!');
     } finally {
       setLoading(false);
     }

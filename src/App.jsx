@@ -4,12 +4,14 @@ import VideoCalling from './test/VideoCalling';
 
 // Common Pages
 import NotFound from './pages/NotFound'; 
+import Form from './pages/Form';
 
 // USER
 import Landing from './pages/Landing';
 import UserLogin from './features/auth/Login';
 import Signup from './features/auth/Signup';
 import AboutUs from './pages/AboutUs';
+import ContactUs from './pages/ContactUs';
 
 
 function App() {
@@ -24,8 +26,10 @@ function App() {
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/contact-us" element={<ContactUs />} />
 
-
+        {/* PUBLIC FORM ROUTES */}
+        <Route path="/forms/:slug" element={<Form />} />
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

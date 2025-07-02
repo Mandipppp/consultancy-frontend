@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
+import toastManager from '../../utils/toastManager';
+import { Toaster } from 'react-hot-toast';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const Signup = () => {
         available: null,
         suggestions: []
       });
-      toast.error('Could not verify username availability');
+      toastManager.error(err, 'Could not verify username availability');
     }
   };
 
@@ -136,7 +137,7 @@ const handleSignup = async (e) => {
   const validationError = validateForm();
   if (validationError) {
     setError(validationError);
-    toast.error(validationError);
+    toastManager.error(null, validationError);
     setLoading(false);
     return;
   }
@@ -151,14 +152,14 @@ const handleSignup = async (e) => {
       withCredentials: true
     });
 
-    toast.success('Account created! Please verify your email.');
+    toastManager.success('Account created! Please verify your email.');
     setTimeout(() => navigate('/login'), 1500);
   } catch (err) {
     console.error('Signup error:', err);
     const apiError = err.response?.data?.error;
     const errorMessage = apiError?.message || 'Signup failed';
     setError(errorMessage);
-    toast.error(errorMessage);
+    toastManager.error(err, errorMessage);
   } finally {
     setLoading(false);
   }

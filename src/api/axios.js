@@ -2,16 +2,16 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
 
 // these are the only routes that must work *without* a token
 const PUBLIC_PATHS = [
-  '/auth/login',
-  '/auth/admin/login',
-  '/auth/refresh',
+  '/',
+  '/api/forms/public/', // Public form access
+  '/api/forms/' // For form submissions
 ];
 
 api.interceptors.request.use(config => {
@@ -26,7 +26,7 @@ api.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken');
   if (!token) {
     // redirect to login if no token
-    window.location.href = '/admin/login';
+    window.location.href = '/';
     // cancel the axios request so it doesn’t hang
     return Promise.reject(new axios.Cancel('No access token'));
   }
