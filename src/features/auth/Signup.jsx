@@ -245,40 +245,40 @@ const handleSignup = async (e) => {
         </div>
 
         {/* Right Side - Clean Signup Form */}
-        <div className="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-8 lg:p-12 max-h-screen overflow-y-auto">
-          <div className="w-full max-w-md py-8">
+        <div className="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-4 lg:p-6 h-screen overflow-hidden">
+          <div className="w-full max-w-md h-full flex flex-col justify-center">
             {/* Clean, minimal card */}
-            <div className="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-light text-slate-800 mb-3 tracking-wide">Join Us Today</h2>
-                <p className="text-slate-600 font-light">Create your account and start learning</p>
+            <div className="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-6 shadow-xl h-full flex flex-col justify-center max-h-[95vh]">
+              <div className="text-center mb-4">
+                <h2 className="text-2xl font-light text-slate-800 mb-2 tracking-wide">Join Us Today</h2>
+                <p className="text-slate-600 font-light text-sm">Create your account and start learning</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 flex-1 overflow-y-auto">
                 {/* Full Name */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Full Name</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-slate-700">Full Name</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/60 border border-blue-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light"
+                    className="w-full px-3 py-2 bg-white/60 border border-blue-200/60 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light text-sm"
                     placeholder="Enter your full name"
                     required
                   />
                 </div>
 
                 {/* Username with Status */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Username</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-slate-700">Username</label>
                   <div className="relative">
                     <input
                       type="text"
                       name="userName"
                       value={formData.userName}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 pr-12 bg-white/60 border rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light ${
+                      className={`w-full px-3 py-2 pr-10 bg-white/60 border rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light text-sm ${
                         usernameStatus.available === true 
                           ? 'border-green-300 focus:ring-green-500/50' 
                           : usernameStatus.available === false 
@@ -290,20 +290,20 @@ const handleSignup = async (e) => {
                     />
                     
                     {/* Status Icon */}
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                       {usernameStatus.checking && (
-                        <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div className="w-3 h-3 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin"></div>
                       )}
                       {usernameStatus.available === true && (
-                        <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                          <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
                       )}
                       {usernameStatus.available === false && (
-                        <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                          <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </div>
@@ -313,34 +313,34 @@ const handleSignup = async (e) => {
                   
                   {/* Username Status Messages */}
                   {usernameStatus.available === true && (
-                    <div className="flex items-center space-x-2 text-green-600 text-sm">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center space-x-2 text-green-600 text-xs">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="font-light">Username is available!</span>
+                      <span className="font-light">Available!</span>
                     </div>
                   )}
                   
                   {usernameStatus.available === false && (
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2 text-red-600 text-sm">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2 text-red-600 text-xs">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                        <span className="font-light">Username is unavailable</span>
+                        <span className="font-light">Unavailable</span>
                       </div>
                       
                       {/* Suggestions */}
                       {usernameStatus.suggestions.length > 0 && (
-                        <div className="bg-blue-50/80 border border-blue-200/60 rounded-2xl p-3 backdrop-blur-sm">
-                          <p className="text-sm text-blue-700 font-medium mb-2">Try these suggestions:</p>
-                          <div className="flex flex-wrap gap-2">
-                            {usernameStatus.suggestions.map((suggestion, index) => (
+                        <div className="bg-blue-50/80 border border-blue-200/60 rounded-xl p-2 backdrop-blur-sm">
+                          <p className="text-xs text-blue-700 font-medium mb-1">Suggestions:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {usernameStatus.suggestions.slice(0, 3).map((suggestion, index) => (
                               <button
                                 key={index}
                                 type="button"
                                 onClick={() => handleSuggestionClick(suggestion)}
-                                className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm rounded-lg transition-colors font-light border border-blue-200/60"
+                                className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs rounded-lg transition-colors font-light border border-blue-200/60"
                               >
                                 {suggestion}
                               </button>
@@ -353,58 +353,58 @@ const handleSignup = async (e) => {
                 </div>
 
                 {/* Email */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Email Address</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-slate-700">Email Address</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/60 border border-blue-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light"
+                    className="w-full px-3 py-2 bg-white/60 border border-blue-200/60 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light text-sm"
                     placeholder="Enter your email"
                     required
                   />
                 </div>
 
                 {/* Password */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Password</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-slate-700">Password</label>
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/60 border border-blue-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light"
+                    className="w-full px-3 py-2 bg-white/60 border border-blue-200/60 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light text-sm"
                     placeholder="Create a password (min 8 characters)"
                     required
                   />
                 </div>
 
                 {/* Confirm Password */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">Confirm Password</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-slate-700">Confirm Password</label>
                   <input
                     type="password"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/60 border border-blue-200/60 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light"
+                    className="w-full px-3 py-2 bg-white/60 border border-blue-200/60 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all font-light text-sm"
                     placeholder="Confirm your password"
                     required
                   />
                 </div>
 
                 {/* Terms Checkbox */}
-                <div className="flex items-start space-x-3 py-2">
+                <div className="flex items-start space-x-2 py-1">
                   <input
                     type="checkbox"
                     name="agreeToTerms"
                     checked={formData.agreeToTerms}
                     onChange={handleInputChange}
-                    className="mt-1 w-4 h-4 text-blue-600 bg-white/60 border-blue-200/60 rounded focus:ring-blue-500/50 focus:ring-2 backdrop-blur-sm"
+                    className="mt-0.5 w-3 h-3 text-blue-600 bg-white/60 border-blue-200/60 rounded focus:ring-blue-500/50 focus:ring-1 backdrop-blur-sm"
                     required
                   />
-                  <label className="text-sm text-slate-600 font-light leading-relaxed">
+                  <label className="text-xs text-slate-600 font-light leading-relaxed">
                     I agree to the{' '}
                     <a href="#" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                       Terms of Service
@@ -415,33 +415,33 @@ const handleSignup = async (e) => {
                     </a>
                   </label>
                 </div>
-
-                {error && (
-                  <div className="p-3 bg-red-50/80 border border-red-200/60 rounded-2xl backdrop-blur-sm">
-                    <p className="text-red-600 text-sm font-light">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  onClick={handleSignup}
-                  disabled={loading}
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-2xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center space-x-3">
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span className="font-light">Creating Account...</span>
-                    </div>
-                  ) : (
-                    <span className="font-light tracking-wide">Create Account</span>
-                  )}
-                </button>
               </div>
+
+              {error && (
+                <div className="p-2 bg-red-50/80 border border-red-200/60 rounded-xl backdrop-blur-sm mt-3">
+                  <p className="text-red-600 text-xs font-light">{error}</p>
+                </div>
+              )}
+
+              <button
+                onClick={handleSignup}
+                disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none mt-4"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span className="font-light text-sm">Creating Account...</span>
+                  </div>
+                ) : (
+                  <span className="font-light tracking-wide text-sm">Create Account</span>
+                )}
+              </button>
             </div>
 
             {/* Subtle bottom link */}
-            <div className="mt-6 text-center">
-              <p className="text-slate-500 text-sm font-light">
+            <div className="mt-4 text-center">
+              <p className="text-slate-500 text-xs font-light">
                 Already have an account?{' '}
                 <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                   Sign in here
