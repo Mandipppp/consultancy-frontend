@@ -51,7 +51,7 @@ const Form = () => {
         setForm(formData);
         
         // Check if form is active
-        if (!formData.isActive) {
+        if (formData.hasOwnProperty('isActive') && formData.isActive === false) {
           setError('This form is no longer accepting submissions.');
           return;
         }
@@ -114,16 +114,15 @@ const Form = () => {
 
   const validateForm = () => {
     const errors = {};
-    
     form.fields.forEach(field => {
+      // Defensive: ensure validation is an object
+      const validation = field.validation || {};
       if (field.required) {
         const value = formData[field.name];
-        
         if (!value || (typeof value === 'string' && value.trim() === '')) {
           errors[field.name] = `${field.label} is required`;
         }
       }
-      
       // Email validation
       if (field.type === 'email' && formData[field.name]) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -131,7 +130,6 @@ const Form = () => {
           errors[field.name] = 'Please enter a valid email address';
         }
       }
-      
       // Phone validation
       if (field.type === 'tel' && formData[field.name]) {
         const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
@@ -139,57 +137,68 @@ const Form = () => {
           errors[field.name] = 'Please enter a valid phone number';
         }
       }
-      
       // Length validation
-      if (field.validation) {
-        const value = formData[field.name];
-        if (value && field.validation.minLength && value.length < field.validation.minLength) {
-          errors[field.name] = `Must be at least ${field.validation.minLength} characters`;
-        }
-        if (value && field.validation.maxLength && value.length > field.validation.maxLength) {
-          errors[field.name] = `Must be no more than ${field.validation.maxLength} characters`;
-        }
+      const value = formData[field.name];
+      if (value && validation.minLength && value.length < validation.minLength) {
+        errors[field.name] = `Must be at least ${validation.minLength} characters`;
+      }
+      if (value && validation.maxLength && value.length > validation.maxLength) {
+        errors[field.name] = `Must be no more than ${validation.maxLength} characters`;
       }
     });
-    
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) {
       toastManager.error(null, 'Please fix the errors in the form');
       return;
     }
-    
     setSubmitting(true);
-    
     try {
-      // Prepare submission data
+      // Prepare submission data with proper field mapping
       const submissionData = {
         studentInfo: {
-          fullName: formData.fullName || '',
-          email: formData.email || '',
-          phoneNumber: formData.phone || formData.phoneNumber || '',
-          dateOfBirth: formData.dateOfBirth || '',
+          // Map common field names to expected structure
+          fullName: formData.full_name || formData.fullName || formData.name || '',
+          email: formData.email_address || formData.email || '',
+          phoneNumber: formData.phone_number || formData.phone || formData.phoneNumber || '',
+          dateOfBirth: formData.date_of_birth || formData.dateOfBirth || '',
           address: {
-            street: formData.address || '',
+            street: formData.address || formData.street_address || '',
             city: formData.city || '',
-            state: formData.state || '',
+            state: formData.state || formData.province || '',
             country: formData.country || '',
-            zipCode: formData.zipCode || ''
+            zipCode: formData.zip_code || formData.zipCode || formData.postal_code || ''
           }
         },
-        formData: formData // Include all form data for custom fields
+        // Include all form data for any custom fields
+        formData: formData
       };
-      
+
+      // Only include non-empty values to avoid validation errors
+      Object.keys(submissionData.studentInfo).forEach(key => {
+        if (typeof submissionData.studentInfo[key] === 'object') {
+          // For nested objects like address
+          Object.keys(submissionData.studentInfo[key]).forEach(nestedKey => {
+            if (!submissionData.studentInfo[key][nestedKey]) {
+              delete submissionData.studentInfo[key][nestedKey];
+            }
+          });
+          // Remove empty address object
+          if (Object.keys(submissionData.studentInfo[key]).length === 0) {
+            delete submissionData.studentInfo[key];
+          }
+        } else if (!submissionData.studentInfo[key]) {
+          delete submissionData.studentInfo[key];
+        }
+      });
+
       const response = await api.post(`/api/forms/${form._id}/submit`, submissionData);
-      
       if (response.data.success) {
         toastManager.success('Application submitted successfully!');
-        
         // Reset form
         const initialData = {};
         form.fields.forEach(field => {
@@ -197,7 +206,6 @@ const Form = () => {
         });
         setFormData(initialData);
         setValidationErrors({});
-        
         // Show success message
         setTimeout(() => {
           navigate('/', { replace: true });
@@ -205,8 +213,31 @@ const Form = () => {
       }
     } catch (err) {
       console.error('Error submitting form:', err);
-      const errorMessage = err.response?.data?.message || 'Failed to submit application. Please try again.';
-      toastManager.error(err, errorMessage);
+      // Handle backend validation errors
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        const backendErrors = {};
+        err.response.data.errors.forEach(e => {
+          // Map backend field paths to frontend field names
+          const pathParts = e.path.split('.');
+          // Handle both old format (studentInfo.fieldName) and new format (formData.fieldName)
+          let frontendField;
+          
+          if (pathParts.length > 1) {
+            // formData.field_name or studentInfo.fieldName
+            frontendField = pathParts[pathParts.length - 1];
+          } else {
+            // Direct field name
+            frontendField = pathParts[0];
+          }
+          
+          backendErrors[frontendField] = e.message;
+        });
+        setValidationErrors(backendErrors);
+        toastManager.error(null, 'Please fix the errors in the form');
+      } else {
+        const errorMessage = err.response?.data?.message || 'Failed to submit application. Please try again.';
+        toastManager.error(err, errorMessage);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -224,7 +255,8 @@ const Form = () => {
       value: formData[field.name] || '',
       onChange: (e) => handleInputChange(field.name, e.target.value)
     };
-
+    // Defensive: always treat options as array
+    const options = Array.isArray(field.options) ? field.options : [];
     switch (field.type) {
       case 'text':
       case 'email':
@@ -237,7 +269,6 @@ const Form = () => {
             {...commonProps}
           />
         );
-        
       case 'textarea':
         return (
           <textarea
@@ -246,19 +277,17 @@ const Form = () => {
             className={`${commonProps.className} resize-none`}
           />
         );
-        
       case 'select':
         return (
           <select {...commonProps}>
             <option value="">Select {field.label}</option>
-            {field.options?.map((option, index) => (
+            {options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
               </option>
             ))}
           </select>
         );
-        
       case 'checkbox':
         return (
           <div className="flex items-center space-x-2">
@@ -275,11 +304,10 @@ const Form = () => {
             </label>
           </div>
         );
-        
       case 'radio':
         return (
           <div className="space-y-2">
-            {field.options?.map((option, index) => (
+            {options.map((option, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <input
                   type="radio"
@@ -297,7 +325,6 @@ const Form = () => {
             ))}
           </div>
         );
-        
       case 'date':
         return (
           <input
@@ -305,7 +332,6 @@ const Form = () => {
             {...commonProps}
           />
         );
-        
       default:
         return (
           <input
