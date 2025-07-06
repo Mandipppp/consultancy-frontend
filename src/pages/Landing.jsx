@@ -30,7 +30,7 @@ export default function HomePage() {
       setLangLoading(true);
       setLangError(null);
       try {
-        // since your api baseURL is .../api, this calls POST /api/languages
+        // since your api baseURL is .../api, this calls GET /api/languages
         const res = await api.get("/api/languages");
         const list = Array.isArray(res.data.data) ? res.data.data : [];
         setLanguages(list);
@@ -147,9 +147,6 @@ export default function HomePage() {
           <h1 className="relative z-10 text-[120px] font-bold text-white drop-shadow-[4px_4px_2px_rgba(0,0,0,0.3)]">
             <img src={logo} alt="Langzy Logo" className="w-full" />
           </h1>
-          <button className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-20 px-12 py-4 rounded-2xl bg-white text-sky-600 text-xl font-bold hover:bg-sky-50 hover:text-sky-700 hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-2xl border-2 border-sky-200 animate-pulse">
-            Get Started
-          </button>
         </div>
       </div>
 

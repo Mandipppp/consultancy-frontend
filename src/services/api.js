@@ -377,7 +377,7 @@ class ApiService {
    * Generate form URL for sharing
    */
   generateFormUrl(formId) {
-    return `${window.location.origin}/form/${formId}`;
+    return `${window.location.origin}/forms/${formId}`;
   }
 }
 

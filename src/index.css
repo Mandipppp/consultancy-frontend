@@ -24,6 +24,24 @@
       transform: translateX(10px);
     }
   }
+
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px); 
+    }
+    50% { 
+      transform: translateY(-20px); 
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      opacity: 1; 
+    }
+    50% { 
+      opacity: .8; 
+    }
+  }
   
   .animate-cloud-left {
     animation: floatLeft 12s ease-in-out infinite;
@@ -35,5 +53,12 @@
   
   .animate-cloud-middle {
     animation: floatMiddle 16s ease-in-out infinite;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   
