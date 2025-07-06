@@ -7,7 +7,10 @@ const Sidebar = () => {
     <div className="w-20 bg-black flex flex-col items-center py-8">
       {/* User Profile Picture */}
       <div className="mb-16">
-        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-white">
+        <div 
+          className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-white cursor-pointer hover:border-gray-300 transition-colors duration-200"
+          onClick={() => window.location.href = '/student/info'}
+        >
           <img 
             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=face" 
             alt="User Profile" 

@@ -13,7 +13,7 @@ import Signup from './features/auth/Signup';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Info from './StudentSide/Info';
-
+import Courses from './StudentSide/Courses';
 
 function App() {
   return (
@@ -31,6 +31,8 @@ function App() {
 
         {/* STUDENT SIDE ROUTES */}
         <Route path="/student/info" element={<Info />} />
+        <Route path="/student/courses" element={<Courses />} />
+
 
         {/* PUBLIC FORM ROUTES */}
         <Route path="/forms/:slug" element={<Form />} />
