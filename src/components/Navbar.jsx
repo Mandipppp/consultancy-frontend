@@ -13,18 +13,30 @@ const Navbar = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
       
-      // Show logo when scrolled down from hero section (around 400px)
-      setShowLogo(currentScrollY > 400);
+      // Show logo when scrolled down from hero section only on landing page
+      if (location.pathname === '/') {
+        setShowLogo(currentScrollY > 400);
+      } else {
+        // Always show logo on other pages
+        setShowLogo(true);
+      }
     };
+
+    // Set initial logo state based on current page
+    if (location.pathname === '/') {
+      setShowLogo(window.scrollY > 400);
+    } else {
+      setShowLogo(true);
+    }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
 
-  // Handle hash scrolling when location changes
+  // Handle navigation scrolling when location changes
   useEffect(() => {
     if (location.hash) {
-      // Small delay to ensure the page has loaded
+      // Handle hash scrolling for sections like #languages, #pricing
       setTimeout(() => {
         const element = document.getElementById(location.hash.substring(1));
         if (element) {
@@ -34,6 +46,12 @@ const Navbar = () => {
           });
         }
       }, 100);
+    } else {
+      // For regular page navigation (no hash), scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
   }, [location]);
 
