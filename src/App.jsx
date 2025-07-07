@@ -14,6 +14,9 @@ import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Info from './StudentSide/Info';
 import Courses from './StudentSide/Courses';
+import Material from './StudentSide/Material';
+import Schedule from './StudentSide/Schedule';
+import Messages from './StudentSide/Messages';
 
 function App() {
   return (
@@ -30,8 +33,13 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
 
         {/* STUDENT SIDE ROUTES */}
-        <Route path="/student/info" element={<Info />} />
-        <Route path="/student/courses" element={<Courses />} />
+        <Route path="/student/info" element={<div className="animate-fadeIn"><Info /></div>} />
+        <Route path="/student/courses" element={<div className="animate-fadeIn"><Courses /></div>} />
+        <Route path="/student/materials" element={<div className="animate-fadeIn"><Material /></div>} />
+        <Route path="/student/schedule" element={<div className="animate-fadeIn"><Schedule /></div>} />
+        <Route path="/student/messages" element={<div className="animate-fadeIn"><Messages /></div>} />
+
+
 
 
         {/* PUBLIC FORM ROUTES */}
