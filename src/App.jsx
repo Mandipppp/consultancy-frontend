@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import VideoCalling from './test/VideoCalling';
+import TranslationTooltip from './components/TranslationTooltip';
 
 // Common Pages
 import NotFound from './pages/NotFound'; 
@@ -18,9 +19,13 @@ import Material from './StudentSide/Material';
 import Schedule from './StudentSide/Schedule';
 import Messages from './StudentSide/Messages';
 
+// TUTOR
+import TutorAttendance from './TutorSide/TutorAttendance';
+
 function App() {
   return (
     <Router>
+      <TranslationTooltip />
       <Routes>
         {/* Common/Test Routes */}
         <Route path="/call" element={<VideoCalling />} />
@@ -39,7 +44,8 @@ function App() {
         <Route path="/student/schedule" element={<div className="animate-fadeIn"><Schedule /></div>} />
         <Route path="/student/messages" element={<div className="animate-fadeIn"><Messages /></div>} />
 
-
+        {/* TUTOR SIDE ROUTES */}
+        <Route path="/tutor/attendance" element={<div className="animate-fadeIn"><TutorAttendance /></div>} />
 
 
         {/* PUBLIC FORM ROUTES */}

@@ -581,15 +581,15 @@ const Schedule = () => {
                     <div className="flex-1 overflow-y-auto">
                       {selectedView === 'week' ? (
                         /* Week View */
-                        <div className="grid grid-cols-7 gap-4 h-full">
+                        <div className="grid grid-cols-7 gap-3 h-full">
                           {weekDates.map((date, index) => (
                             <div key={index} className="flex flex-col">
                               {/* Day Header */}
-                              <div className="text-center mb-4 pb-2 border-b border-gray-200">
-                                <div className="text-sm font-medium text-gray-600">{dayNames[index]}</div>
-                                <div className={`text-lg font-semibold mt-1 ${
+                              <div className="text-center mb-4 pb-3 border-b-2 border-gray-200">
+                                <div className="text-sm font-semibold text-gray-700">{dayNames[index]}</div>
+                                <div className={`text-xl font-bold mt-1 ${
                                   date.toDateString() === new Date().toDateString()
-                                    ? 'text-blue-600'
+                                    ? 'text-blue-600 bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center mx-auto'
                                     : 'text-gray-800'
                                 }`}>
                                   {date.getDate()}
@@ -597,19 +597,20 @@ const Schedule = () => {
                               </div>
                               
                               {/* Events for this day */}
-                              <div className="flex-1 space-y-2">
+                              <div className="flex-1 space-y-2 overflow-y-auto">
                                 {getEventsForDate(date).map((event) => (
                                   <div
                                     key={event.id}
-                                    className={`p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                                    className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md ${
                                       selectedEvent?.id === event.id
-                                        ? 'border-blue-500 bg-blue-50'
+                                        ? 'border-blue-500 bg-blue-50 shadow-sm'
                                         : getEventTypeColor(event.type)
                                     } ${getEventOpacity(event)}`}
                                     onClick={() => setSelectedEvent(event)}
                                   >
-                                    <div className="flex items-start justify-between mb-2">
-                                      <div className="flex items-center space-x-2">
+                                    {/* Compact Header */}
+                                    <div className="flex items-center justify-between mb-2">
+                                      <div className="flex items-center space-x-1">
                                         <FontAwesomeIcon 
                                           icon={getEventTypeIcon(event.type)} 
                                           className="text-xs" 
@@ -622,29 +623,67 @@ const Schedule = () => {
                                         className="w-4 h-3 object-contain"
                                       />
                                     </div>
-                                    <h4 className={`font-medium text-sm mb-1 line-clamp-2 ${
+                                    
+                                    {/* Event Title - Compact */}
+                                    <h4 className={`font-medium text-sm mb-2 leading-tight ${
                                       isEventInPast(event.date) ? 'text-gray-600' : 'text-gray-800'
-                                    }`}>
+                                    }`} style={{
+                                      display: '-webkit-box',
+                                      WebkitLineClamp: 2,
+                                      WebkitBoxOrient: 'vertical',
+                                      overflow: 'hidden',
+                                      wordBreak: 'break-word'
+                                    }}>
                                       {event.title}
                                     </h4>
-                                    <p className="text-xs text-gray-600">
+                                    
+                                    {/* Time - Single Line */}
+                                    <p className="text-xs text-gray-600 mb-1 font-medium">
                                       {formatTime(event.startTime)} - {formatTime(event.endTime)}
                                     </p>
-                                    <p className="text-xs text-gray-500 mt-1">{event.tutor}</p>
-                                    {isEventToday(event.date) && (
-                                      <p className="text-xs text-blue-600 font-medium mt-1">Today</p>
-                                    )}
-                                    {isEventInPast(event.date) && event.status === 'completed' && (
-                                      <p className="text-xs text-green-600 font-medium mt-1">Completed</p>
-                                    )}
+                                    
+                                    {/* Tutor - Single Line */}
+                                    <p className="text-xs text-gray-500 mb-2" style={{
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis'
+                                    }}>
+                                      {event.tutor}
+                                    </p>
+                                    
+                                    {/* Compact Status */}
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className={`px-2 py-1 text-xs font-medium rounded flex-shrink-0 ${getEventTypeColor(event.type)}`}>
+                                        {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                                      </span>
+                                      
+                                      {/* Status Indicator */}
+                                      {isEventToday(event.date) && (
+                                        <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded font-bold flex-shrink-0">
+                                          TODAY
+                                        </span>
+                                      )}
+                                      {isEventInPast(event.date) && event.status === 'completed' && (
+                                        <span className="text-xs bg-green-500 text-white px-2 py-1 rounded font-bold flex-shrink-0">
+                                          DONE
+                                        </span>
+                                      )}
+                                    </div>
                                   </div>
                                 ))}
+                                
+                                {/* Empty state for days with no events */}
+                                {getEventsForDate(date).length === 0 && (
+                                  <div className="flex items-center justify-center h-20 text-gray-400 text-sm">
+                                    No events
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        /* Month View - Simplified */
+                        /* Month View - Enhanced */
                         <div className="space-y-4">
                           {scheduleData
                             .filter(event => {
@@ -656,23 +695,25 @@ const Schedule = () => {
                             .map((event) => (
                               <div
                                 key={event.id}
-                                className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                                className={`p-5 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${
                                   selectedEvent?.id === event.id
-                                    ? 'border-blue-500 bg-blue-50'
+                                    ? 'border-blue-500 bg-blue-50 shadow-md'
                                     : getEventTypeColor(event.type)
                                 } ${getEventOpacity(event)}`}
                                 onClick={() => setSelectedEvent(event)}
                               >
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
-                                    <div className="flex items-center space-x-3 mb-2">
+                                    {/* Event Header */}
+                                    <div className="flex items-center space-x-3 mb-3">
                                       <FontAwesomeIcon 
                                         icon={getEventTypeIcon(event.type)} 
-                                        className="text-sm" 
+                                        className="text-lg" 
                                       />
-                                      <div className={`w-3 h-3 rounded-full ${getStatusColor(event.status)}`}></div>
-                                      <span className="text-sm font-medium text-gray-600">
+                                      <div className={`w-4 h-4 rounded-full ${getStatusColor(event.status)}`}></div>
+                                      <span className="text-sm font-bold text-gray-700 bg-gray-100 px-3 py-1 rounded-full">
                                         {new Date(event.date).toLocaleDateString('en-US', { 
+                                          weekday: 'short',
                                           month: 'short', 
                                           day: 'numeric' 
                                         })}
@@ -680,37 +721,82 @@ const Schedule = () => {
                                       <img 
                                         src={event.flag} 
                                         alt="Course Flag" 
-                                        className="w-5 h-4 object-contain"
+                                        className="w-6 h-5 object-contain"
                                       />
                                     </div>
-                                    <h4 className={`font-semibold mb-1 ${
+                                    
+                                    {/* Event Title */}
+                                    <h4 className={`font-bold text-lg mb-3 ${
                                       isEventInPast(event.date) ? 'text-gray-600' : 'text-gray-800'
                                     }`}>
                                       {event.title}
+                                    </h4>
+                                    
+                                    {/* Event Details */}
+                                    <div className="space-y-2 mb-3">
+                                      {/* Time */}
+                                      <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon icon={faClock} className="text-gray-400 text-sm" />
+                                        <p className="text-sm font-semibold text-gray-700">
+                                          {formatTime(event.startTime)} - {formatTime(event.endTime)}
+                                        </p>
+                                      </div>
+                                      
+                                      {/* Tutor */}
+                                      <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon icon={faUsers} className="text-gray-400 text-sm" />
+                                        <p className="text-sm text-gray-600 font-medium">{event.tutor}</p>
+                                      </div>
+                                      
+                                      {/* Location */}
+                                      <div className="flex items-center space-x-2">
+                                        <FontAwesomeIcon icon={faMapPin} className="text-gray-400 text-sm" />
+                                        <p className="text-sm text-gray-500">{event.location}</p>
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Status Badges */}
+                                    <div className="flex flex-wrap gap-2">
                                       {isEventToday(event.date) && (
-                                        <span className="ml-2 text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full font-medium">
-                                          Today
+                                        <span className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold">
+                                          TODAY
                                         </span>
                                       )}
                                       {isEventInPast(event.date) && event.status === 'completed' && (
-                                        <span className="ml-2 text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full font-medium">
-                                          Completed
+                                        <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
+                                          COMPLETED
                                         </span>
                                       )}
-                                    </h4>
-                                    <p className="text-sm text-gray-600 mb-2">
-                                      {formatTime(event.startTime)} - {formatTime(event.endTime)}
-                                    </p>
-                                    <p className="text-sm text-gray-500">{event.tutor} • {event.location}</p>
+                                      {event.status === 'scheduled' && !isEventInPast(event.date) && (
+                                        <span className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold">
+                                          SCHEDULED
+                                        </span>
+                                      )}
+                                    </div>
                                   </div>
+                                  
+                                  {/* Event Type Badge */}
                                   <div className="text-right">
-                                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getEventTypeColor(event.type)}`}>
-                                      {event.type}
+                                    <span className={`px-3 py-2 text-sm font-bold rounded-full ${getEventTypeColor(event.type)}`}>
+                                      {event.type.toUpperCase()}
                                     </span>
                                   </div>
                                 </div>
                               </div>
                             ))}
+                          
+                          {/* Empty state for months with no events */}
+                          {scheduleData.filter(event => {
+                            const eventDate = new Date(event.date);
+                            return eventDate.getMonth() === currentDate.getMonth() && 
+                                   eventDate.getFullYear() === currentDate.getFullYear();
+                          }).length === 0 && (
+                            <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+                              <FontAwesomeIcon icon={faCalendarDays} className="text-6xl mb-4" />
+                              <h3 className="text-xl font-medium text-gray-600 mb-2">No Events This Month</h3>
+                              <p className="text-sm">There are no scheduled events for this month.</p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -880,7 +966,7 @@ const Schedule = () => {
         </div>
         
         {/* Floating Notification Button - Bottom Right */}
-        <div className="fixed bottom-10 right-10 z-50">
+        <div className="fixed bottom-8 right-8 z-50">
           <div className="relative">
             <button 
               onClick={toggleNotificationPanel}

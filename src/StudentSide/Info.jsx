@@ -8,15 +8,38 @@ import Sidebar from './Sidebar';
 const Info = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  const weeklyStats = [
-    { day: 'Sun', value: 0 },
-    { day: 'Mon', value: 180 },
-    { day: 'Tue', value: 120 },
-    { day: 'Wed', value: 200 },
-    { day: 'Thu', value: 150 },
-    { day: 'Fri', value: 250 },
-    { day: 'Sat', value: 100 }
+  // Sample attendance data - replace with API call
+  const attendanceData = [
+    { date: '2024-01-15', status: 'present', className: 'German A1 - Grammar' },
+    { date: '2024-01-16', status: 'present', className: 'German A1 - Vocabulary' },
+    { date: '2024-01-17', status: 'late', className: 'German A1 - Speaking' },
+    { date: '2024-01-18', status: 'absent', className: 'German A1 - Listening' },
+    { date: '2024-01-19', status: 'present', className: 'German A1 - Grammar' },
+    { date: '2024-01-22', status: 'present', className: 'German A1 - Vocabulary' },
+    { date: '2024-01-23', status: 'present', className: 'German A1 - Speaking' }
   ];
+
+  // Convert attendance to weekly stats for the graph
+  const weeklyStats = [
+    { day: 'Sun', attendance: 0, studyTime: 0 },
+    { day: 'Mon', attendance: 1, studyTime: 180 },
+    { day: 'Tue', attendance: 1, studyTime: 120 },
+    { day: 'Wed', attendance: 0.5, studyTime: 100 }, // 0.5 for late
+    { day: 'Thu', attendance: 0, studyTime: 0 }, // 0 for absent
+    { day: 'Fri', attendance: 1, studyTime: 250 },
+    { day: 'Sat', attendance: 1, studyTime: 100 }
+  ];
+
+  // Calculate attendance statistics
+  const attendanceStats = {
+    totalClasses: attendanceData.length,
+    present: attendanceData.filter(record => record.status === 'present').length,
+    late: attendanceData.filter(record => record.status === 'late').length,
+    absent: attendanceData.filter(record => record.status === 'absent').length,
+    attendanceRate: ((attendanceData.filter(record => record.status === 'present').length + 
+                     attendanceData.filter(record => record.status === 'late').length * 0.5) / 
+                     attendanceData.length * 100).toFixed(1)
+  };
 
   const notifications = [
     {
@@ -339,12 +362,25 @@ const Info = () => {
                         tickMargin={12}
                       />
                       <YAxis 
+                        yAxisId="studyTime"
                         axisLine={false}
                         tickLine={false}
                         tick={{ fontSize: 12, fill: '#9ca3af' }}
                         tickMargin={12}
                         domain={[0, 300]}
                         ticks={[0, 50, 100, 150, 200, 250, 300]}
+                        interval={0}
+                      />
+                      <YAxis 
+                        yAxisId="attendance"
+                        orientation="right"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fontSize: 12, fill: '#9ca3af' }}
+                        tickMargin={12}
+                        domain={[0, 1]}
+                        ticks={[0, 0.25, 0.5, 0.75, 1]}
+                        tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
                         interval={0}
                       />
                       <Tooltip 
@@ -362,15 +398,19 @@ const Info = () => {
                           color: '#e5e7eb',
                           marginBottom: '4px'
                         }}
-                        formatter={(value, name) => [
-                          `${value} minutes`,
-                          'Study Time'
-                        ]}
+                        formatter={(value, name) => {
+                          if (name === 'studyTime') {
+                            return [`${value} minutes`, 'Study Time'];
+                          } else if (name === 'attendance') {
+                            return [`${(value * 100).toFixed(0)}%`, 'Attendance'];
+                          }
+                          return [value, name];
+                        }}
                         labelFormatter={(label) => `${label}`}
                       />
                       <Line 
                         type="monotone" 
-                        dataKey="value" 
+                        dataKey="studyTime" 
                         stroke="#3b82f6" 
                         strokeWidth={3}
                         dot={{ 
@@ -386,23 +426,117 @@ const Info = () => {
                           strokeWidth: 3
                         }}
                         animationDuration={1000}
+                        yAxisId="studyTime"
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="attendance" 
+                        stroke="#10b981" 
+                        strokeWidth={3}
+                        dot={{ 
+                          fill: '#10b981', 
+                          strokeWidth: 2, 
+                          stroke: '#ffffff',
+                          r: 5 
+                        }}
+                        activeDot={{ 
+                          r: 7, 
+                          fill: '#10b981',
+                          stroke: '#ffffff',
+                          strokeWidth: 3
+                        }}
+                        animationDuration={1000}
+                        yAxisId="attendance"
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
               
-              {/* Progress Section - Right Side */}
-              <div className="flex flex-col justify-center h-80 ml-8">
-                <div className="bg-gray-900 rounded-2xl p-6 text-white w-48 h-64 flex flex-col justify-center">
-                  <h3 className="text-lg font-semibold mb-6 text-white">Progress</h3>
-                  <div className="space-y-4">
-                    <div className="text-sm text-gray-300">Consistency</div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-4xl font-bold">20</span>
-                      <span className="text-xl text-gray-300">/30</span>
-                      <span className="text-sm text-gray-400 ml-2">days</span>
+              {/* Attendance Statistics - Right Side */}
+              <div className="flex flex-col justify-center h-80 ml-8 space-y-4">
+                {/* Attendance Rate Card */}
+                <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white w-48">
+                  <h3 className="text-lg font-semibold mb-2">Attendance Rate</h3>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="text-4xl font-bold">{attendanceStats.attendanceRate}</span>
+                    <span className="text-xl">%</span>
+                  </div>
+                  <p className="text-sm opacity-90 mt-2">
+                    {attendanceStats.present} present, {attendanceStats.late} late, {attendanceStats.absent} absent
+                  </p>
+                </div>
+
+                {/* Progress Card */}
+                <div className="bg-gray-900 rounded-2xl p-6 text-white w-48">
+                  <h3 className="text-lg font-semibold mb-2">Consistency</h3>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="text-4xl font-bold">{attendanceStats.present}</span>
+                    <span className="text-xl text-gray-300">/{attendanceStats.totalClasses}</span>
+                    <span className="text-sm text-gray-400 ml-2">classes</span>
+                  </div>
+                  <p className="text-sm text-gray-400 mt-2">Classes attended this week</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Separator Line */}
+          <hr className="border-gray-200 my-8" />
+
+          {/* Attendance History Section */}
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-6 opacity-70">Recent Attendance</h3>
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="space-y-3">
+                {attendanceData.slice(-5).reverse().map((record, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-3 h-3 rounded-full ${
+                        record.status === 'present' ? 'bg-green-500' :
+                        record.status === 'late' ? 'bg-yellow-500' :
+                        'bg-red-500'
+                      }`}></div>
+                      <div>
+                        <h4 className="font-medium text-gray-800 text-sm">{record.className}</h4>
+                        <p className="text-xs text-gray-600">{new Date(record.date).toLocaleDateString('en-US', { 
+                          weekday: 'short', 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}</p>
+                      </div>
                     </div>
+                    <div className="text-right">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        record.status === 'present' ? 'bg-green-100 text-green-700' :
+                        record.status === 'late' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Attendance Summary */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="grid grid-cols-4 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-gray-800">{attendanceStats.totalClasses}</div>
+                    <div className="text-sm text-gray-600">Total Classes</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-green-600">{attendanceStats.present}</div>
+                    <div className="text-sm text-gray-600">Present</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-yellow-600">{attendanceStats.late}</div>
+                    <div className="text-sm text-gray-600">Late</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-red-600">{attendanceStats.absent}</div>
+                    <div className="text-sm text-gray-600">Absent</div>
                   </div>
                 </div>
               </div>
@@ -445,7 +579,7 @@ const Info = () => {
         </div>
         
         {/* Floating Notification Button - Bottom Right */}
-        <div className="fixed bottom-10 right-10 z-50">
+        <div className="fixed bottom-8 right-8 z-50">
           <div className="relative">
             <button 
               onClick={toggleNotificationPanel}

@@ -505,7 +505,7 @@ const Material = () => {
         </div>
         
         {/* Floating Notification Button - Bottom Right */}
-        <div className="fixed bottom-10 right-10 z-50">
+        <div className="fixed bottom-8 right-8 z-50">
           <div className="relative">
             <button 
               onClick={toggleNotificationPanel}
