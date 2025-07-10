@@ -147,13 +147,33 @@ const handleSignup = async (e) => {
     const { confirmPassword, agreeToTerms, ...payload } = formData;
 
     // Use cleaned payload in API call
-    const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, payload, {
+    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, payload, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
 
-    toastManager.success('Account created! Please verify your email.');
-    setTimeout(() => navigate('/login'), 1500);
+    toastManager.success('Account created! Logging you in...');
+
+    // Auto-login after signup
+    try {
+      const loginRes = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
+        email: formData.email,
+        password: formData.password
+      }, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+      });
+      // Store token and user info
+      localStorage.setItem('accessToken', loginRes.data.token);
+      localStorage.setItem('user', JSON.stringify(loginRes.data.user));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${loginRes.data.token}`;
+      setTimeout(() => navigate('/dashboard'), 1000);
+    } catch (loginErr) {
+      const loginErrorMsg = loginErr.response?.data?.message || 'Signup succeeded, but auto-login failed. Please login manually.';
+      setError(loginErrorMsg);
+      toastManager.error(loginErr, loginErrorMsg);
+      setTimeout(() => navigate('/login'), 2000);
+    }
   } catch (err) {
     console.error('Signup error:', err);
     const apiError = err.response?.data?.error;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logoSharp from '../assets/images/logo_sharp.png';
+import logoSharp from '../../../src/assets/images/logo_sharp.png';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays, faPen, faGear, faMedal, faClock, faQuestionCircle, faBullseye, faBell, faTimes, faCheck, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';

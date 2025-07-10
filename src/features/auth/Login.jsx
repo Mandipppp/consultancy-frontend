@@ -38,58 +38,33 @@ const Login = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-
-    console.log('📤 Attempting to login with:', { email, password });
-
+    setError && setError('');
     try {
-      const url = `${import.meta.env.VITE_API_BASE_URL}/auth/login`;
-      console.log('🌐 Sending POST request to:', url);
-
-      const res = await axios.post(url, { email, password }, {
-        withCredentials: true,
-        headers: { 'Content-Type': 'application/json' }
+      const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
+        email,
+        password
+      }, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
       });
-
-      console.log('✅ Login response:', res.data);
-
-      const data = res.data;
-      localStorage.setItem('token', data.token);
+      // Store token & user info
+      localStorage.setItem('accessToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-
-      // Show success toast
-      toastManager.success('Login successful! Redirecting...');
-
-      // Delay redirect to show toast
-      setTimeout(() => {
-        switch (data.user.role) {
-          case 'student':
-            navigate('/student/dashboard');
-            break;
-          case 'owner':
-            navigate('/owner/dashboard');
-            break;
-          case 'tutor':
-            navigate('/tutor/dashboard');
-            break;
-          case 'admin':
-            navigate('/admin/dashboard');
-            break;
-          default:
-            navigate('/');
-        }
-      }, 1500); // 1.5 second delay
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      toastManager && toastManager.success ? toastManager.success('Welcome back!') : null;
+      navigate('/dashboard');
     } catch (err) {
-      console.error('❌ Login error:', err.response?.data || err.message);
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
-      toastManager.error(err, err.response?.data?.message || 'Login failed!');
+      const msg = err.response?.data?.message || 'Login failed';
+      toastManager && toastManager.error ? toastManager.error(err, msg) : null;
+      setError && setError(msg);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-hidden">
       {/* Subtle background pattern */}
@@ -184,7 +159,7 @@ const Login = () => {
                 )}
 
                 <button
-                  onClick={handleLogin}
+                  onClick={handleSubmit}
                   disabled={loading}
                   className="w-full py-3 lg:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-2xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-[1.01] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 >

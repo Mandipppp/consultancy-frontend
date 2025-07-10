@@ -13,11 +13,11 @@ import UserLogin from './features/auth/Login';
 import Signup from './features/auth/Signup';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
-import Info from './StudentSide/Info';
-import Courses from './StudentSide/Courses';
-import Material from './StudentSide/Material';
-import Schedule from './StudentSide/Schedule';
-import Messages from './StudentSide/Messages';
+import Info from './features/StudentSide/Info';
+import Courses from './features/StudentSide/Courses';
+import Material from './features/StudentSide/Material';
+import Schedule from './features/StudentSide/Schedule';
+import Messages from './features/StudentSide/Messages';
 
 // TUTOR
 import TutorAttendance from './TutorSide/TutorAttendance';
@@ -38,10 +38,10 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
 
         {/* STUDENT SIDE ROUTES */}
-        <Route path="/student/info" element={<div className="animate-fadeIn"><Info /></div>} />
-        <Route path="/student/courses" element={<div className="animate-fadeIn"><Courses /></div>} />
-        <Route path="/student/materials" element={<div className="animate-fadeIn"><Material /></div>} />
-        <Route path="/student/schedule" element={<div className="animate-fadeIn"><Schedule /></div>} />
+        <Route path="/dashboard" element={<div className="animate-fadeIn"><Info /></div>} />
+        <Route path="/dashboard/courses" element={<div className="animate-fadeIn"><Courses /></div>} />
+        <Route path="/dashboard/materials" element={<div className="animate-fadeIn"><Material /></div>} />
+        <Route path="/dashboard/schedule" element={<div className="animate-fadeIn"><Schedule /></div>} />
         <Route path="/student/messages" element={<div className="animate-fadeIn"><Messages /></div>} />
 
         {/* TUTOR SIDE ROUTES */}

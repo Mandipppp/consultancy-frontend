@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import logoSharp from '../assets/images/logo_sharp.png';
+import logoSharp from '../../../src/assets/images/logo_sharp.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faPaperPlane, 

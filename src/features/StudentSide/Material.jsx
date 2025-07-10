@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logoSharp from '../assets/images/logo_sharp.png';
+import logoSharp from '../../../src/assets/images/logo_sharp.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays, faBook, faFileAlt, faDownload, faBell, faTimes, faCheck, faExclamationTriangle, faPlay, faStar, faCheckCircle, faClock, faGraduationCap, faFile, faFilePdf, faFileWord, faFileVideo, faEye } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from './Sidebar';

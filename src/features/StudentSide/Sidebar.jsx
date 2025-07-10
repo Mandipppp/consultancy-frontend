@@ -13,12 +13,12 @@ const Sidebar = ({ currentPage }) => {
     if (currentPage) return currentPage;
     
     const path = location.pathname;
-    if (path.includes('/courses')) return 'courses';
-    if (path.includes('/messages')) return 'messages';
-    if (path.includes('/schedule')) return 'schedule';
-    if (path.includes('/materials')) return 'materials';
-    if (path.includes('/info')) return 'info';
-    return 'courses'; // default
+    if (path.startsWith('/dashboard/courses')) return 'courses';
+    if (path.startsWith('/student/messages')) return 'messages';
+    if (path.startsWith('/dashboard/schedule')) return 'schedule';
+    if (path.startsWith('/dashboard/materials')) return 'materials';
+    if (path === '/dashboard' || path.startsWith('/dashboard/info')) return 'info';
+    return 'courses'; 
   };
   
   const activePage = getCurrentPage();
@@ -49,7 +49,7 @@ const Sidebar = ({ currentPage }) => {
         <div className="mb-16">
           <div 
             className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-white cursor-pointer hover:border-gray-300 transition-colors duration-200"
-            onClick={() => navigate('/student/info')}
+            onClick={() => navigate('/dashboard')}
           >
             <img 
               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=face" 
@@ -65,7 +65,7 @@ const Sidebar = ({ currentPage }) => {
             className={`flex flex-col items-center space-y-2 cursor-pointer transition-opacity duration-200 ${
               activePage === 'courses' ? 'opacity-100 hover:opacity-80' : 'opacity-50 hover:opacity-70'
             }`}
-            onClick={() => navigate('/student/courses')}
+            onClick={() => navigate('/dashboard/courses')}
           >
             <div className={`w-8 h-8 flex items-center justify-center text-white ${
               activePage === 'courses' ? 'bg-white bg-opacity-20 rounded-lg' : ''
@@ -95,7 +95,7 @@ const Sidebar = ({ currentPage }) => {
             className={`flex flex-col items-center space-y-2 cursor-pointer transition-opacity duration-200 ${
               activePage === 'schedule' ? 'opacity-100 hover:opacity-80' : 'opacity-50 hover:opacity-70'
             }`}
-            onClick={() => navigate('/student/schedule')}
+            onClick={() => navigate('/dashboard/schedule')}
           >
             <div className={`w-8 h-8 flex items-center justify-center text-white ${
               activePage === 'schedule' ? 'bg-white bg-opacity-20 rounded-lg' : ''
@@ -110,7 +110,7 @@ const Sidebar = ({ currentPage }) => {
             className={`flex flex-col items-center space-y-2 cursor-pointer transition-opacity duration-200 ${
               activePage === 'materials' ? 'opacity-100 hover:opacity-80' : 'opacity-50 hover:opacity-70'
             }`}
-            onClick={() => navigate('/student/materials')}
+            onClick={() => navigate('/dashboard/materials')}
           >
             <div className={`w-8 h-8 flex items-center justify-center text-white ${
               activePage === 'materials' ? 'bg-white bg-opacity-20 rounded-lg' : ''
